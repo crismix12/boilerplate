@@ -20,7 +20,7 @@ db.authenticate()
     .then(() => console.log("Autenticacion exitosa"))
     .catch((error) => console.log(error));
 
-db.sync({ force: false})
+db.sync({ force: false })
     .then(() => console.log("bd sincronizada"))
     .catch((error) => console.log(error))
 

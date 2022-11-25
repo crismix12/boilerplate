@@ -9,11 +9,7 @@ const Users = db.define('users', {
         autoIncrement: true,
         allowNull: false,
     },
-    firstname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    lastname: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -28,23 +24,13 @@ const Users = db.define('users', {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    profileImage: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: "profile_image"
-    },
-    phone: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
     }
 }, {
     hooks: {
-        beforeCreate: (user, options) => {
-            const {password} = user;
+        beforeCreate: (newUser, options) => {
+            const {password} = newUser;
             const hash = bcrypt.hashSync(password, 8);
-            user.password = hash;
+            newUser.password = hash;
         }
     }
 })
