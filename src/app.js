@@ -6,7 +6,7 @@ const handleError = require('./middlewares/error.middleware');
 const initModels = require('./models/initModels');
 // const userRoutes = require('./Routes/users.routes');
 
-const {userRoutes, authRoutes} = require('./Routes');
+const {userRoutes, authRoutes, productsRoutes, productsInCartRoutes, orderRoutes} = require('./Routes');
 
 const app = express();
 
@@ -30,6 +30,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', userRoutes);
 app.use('/api/v1', authRoutes);
+app.use('/api/v1', productsRoutes);
+app.use('/api/v1', productsInCartRoutes);
+app.use('/api/v1', orderRoutes);
 
 app.use(handleError);
 

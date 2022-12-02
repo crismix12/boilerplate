@@ -1,27 +1,33 @@
 // const { Users, Conversations, Messages, Participants} = require('./index');
 
-const {Users} = require('./index');
+const {Users, Cart, Products, Orders, ProductsInCart} = require('./index');
 
 const initModels = () => {
-    Users;
+    
+    //relacion 1 - 1 entre usuarios y carrito
+    Users.hasOne(Cart, {as: "cart", foreignKey: "user_id"});
+    Cart.belongsTo(Users, {as: "buyer", foreignKey: "user_id"});
 
-    // //muchos a muchos ===> usuarios y conversaciones
-    // Users.belongsToMany(Conversations, {through: 'participants'});
-    // Conversations.belongsToMany(Users, {through: 'participants'});
+    //relacion 1 - N entre usuarios y productos
+    Users.hasMany(Products, {as: "products", foreignKey: "user_id"});
+    Products.belongsTo(Users, {as: "seller", foreignKey: "user_id"});
 
-    // //1 a muchos ===> usuarios mensajes
-    // Messages.belongsTo(Users, {as: 'sender', foreignKey: 'sender_id'});
-    // Users.hasMany(Messages, {as: 'messages', foreignKey: 'sender_id'});
+    //relacion 1 - N entre usuarios y ordenes
+    Users.hasMany(Orders, {as: "orders", foreignKey: "user_id"});
+    Orders.belongsTo(Users, {as: "user", foreignKey: "user_id"});
 
-    // //1 a muchos ===> conversaciones mensajes
-    // Messages.belongsTo(Conversations, {as: 'chat', foreignKey: 'conversation_id'});
-    // Conversations.hasMany(Messages, {as:'messages', foreingKey: 'conversation_id'});
+    // //muchos a muchos ===> cart y products
+    Cart.belongsToMany(Products, {through: 'productsincart'});
+    Products.belongsToMany(Cart, {through: 'productsincart'});
+        //1 a muchos ===> products y productsincart
+        ProductsInCart.belongsTo(Products, {as: 'productInCart', foreignKey: 'product_id'});
+        Products.hasMany(ProductsInCart, {as: 'productsInCart', foreignKey: 'product_id'});
 
-    // //1 a muchos ===> usuarios y conversaciones
-    // Conversations.belongsTo(Users, {as: 'owner', foreignKey:'created_by'});
-    // Users.hasMany(Conversations, {as:"chats", foreignKey: 'created_by'});
+    
+    //Muchos a muchos ===> order y products
+    Orders.belongsToMany(Products, {through: 'productsinorder'});
+    Products.belongsToMany(Orders, {through: 'productsinorder'});
 
-    // // Participants;
 }
 
 module.exports = initModels;

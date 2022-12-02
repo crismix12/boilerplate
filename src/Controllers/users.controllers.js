@@ -15,9 +15,10 @@ const createUser = async(req, res, next) => {
     }
 }
 
-const getAllUser = async (req, res, next) => {
+const getUserInfo = async (req, res, next) => {
     try {
-        const users = await UsersServices.getAll();
+        const {id} = req.params;
+        const users = await UsersServices.getInfo(id);
         res.json(users);
     } catch (error) {
         next({
@@ -28,19 +29,7 @@ const getAllUser = async (req, res, next) => {
     }
 }
 
-const getUserConversations = async(req, res) => {
-    try {
-        const { id } = req.params;
-        const result = await UsersServices.getUsersJoinConversations(id);
-        res.status(200).json(result);
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-
 module.exports = {
     createUser,
-    getUserConversations,
-    getAllUser
+    getUserInfo
 }
